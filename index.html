@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Validazione Form</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    form {
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      width: 300px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #333;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+    }
+
+    .error {
+      color: red;
+      font-size: 14px;
+      margin-top: -8px;
+      margin-bottom: 16px;
+    }
+
+    .hidden {
+      display: none;
+    }
+
+    input[type="submit"] {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    input[type="submit"]:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="myForm" onsubmit="return validateForm()">
+    <label for="username">Username:</label>
+    <input type="text" id="username" onchange="validateUsername()" onfocus="clearError('username')">
+    <span id="usernameError" class="error hidden"></span>
+
+    <label for="email">Email:</label>
+    <input type="email" id="email" onchange="validateEmail()" onfocus="clearError('email')">
+    <span id="emailError" class="error hidden"></span>
+
+    <label for="password">Password:</label>
+    <input type="password" id="password" onchange="validatePassword()" onfocus="clearError('password')">
+    <span id="passwordError" class="error hidden"></span>
+
+    <input type="submit" value="Submit">
+  </form>
+
+  <script>
+    function validateForm() {
+      return validateUsername() && validateEmail() && validatePassword();
+    }
+
+    function validateUsername() {
+      let username = document.getElementById('username').value;
+      let usernameError = document.getElementById('usernameError');
+      if (username.trim() === '') {
+        usernameError.textContent = 'Il nome utente è obbligatorio.';
+        usernameError.classList.remove('hidden');
+        return false;
+      } else {
+        usernameError.textContent = '';
+        usernameError.classList.add('hidden');
+        return true;
+      }
+    }
+
+    function validateEmail() {
+      let email = document.getElementById('email').value;
+      let emailError = document.getElementById('emailError');
+      if (!/^\S+@\S+\.\S+$/.test(email)) {
+        emailError.textContent = 'Inserisci un indirizzo email valido.';
+        emailError.classList.remove('hidden');
+        return false;
+      } else {
+        emailError.textContent = '';
+        emailError.classList.add('hidden');
+        return true;
+      }
+    }
+
+    function validatePassword() {
+      let password = document.getElementById('password').value;
+      let passwordError = document.getElementById('passwordError');
+      
+      if (password.length < 8 || !/(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*.,?&])[A-Za-z\d@$!%*.,?&]{8,}/.test(password)) {
+        passwordError.textContent = 'La password deve essere lunga almeno 8 caratteri e contenere almeno una lettera maiuscola, un numero e un carattere speciale.';
+        passwordError.classList.remove('hidden');
+        return false;
+      } else {
+        passwordError.textContent = '';
+        passwordError.classList.add('hidden');
+        return true;
+      }
+    }
+
+    function clearError(field) {
+      var errorElement = document.getElementById(field + 'Error');
+      errorElement.textContent = '';
+      errorElement.classList.add('hidden');
+    }
+  </script>
+
+</body>
+</html>
+
